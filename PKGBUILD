@@ -70,6 +70,7 @@ license=(
   'AGPL3'
 )
 depends=(
+  "evm-contracts-source-index"
   "evm-chains-explorers"
   "evm-chains-info"
   "evm-contracts-abi-get"
