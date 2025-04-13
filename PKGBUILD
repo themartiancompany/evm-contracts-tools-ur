@@ -54,7 +54,7 @@ if [[ "${_docs}" == "true" ]]; then
   )
 fi
 pkgver="0.0.0.0.0.0.0.0.1.1.1.1.1"
-_commit="e10f115e02e39694c1358b65538efd2f1fd74d96"
+_commit="f763c5e9646d15db8dad48ae56616e76d4c9c5e4"
 pkgrel=1
 _pkgdesc=(
   "EVM networks smart contracts tools."
