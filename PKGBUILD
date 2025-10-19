@@ -19,11 +19,10 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Maintainer:
+# Maintainers:
 #   Truocolo
 #     <truocolo@aol.com>
 #     <truocolo@0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b>
-# Maintainer:
 #   Pellegrino Prevete (dvorak)
 #     <pellegrinoprevete@gmail.com>
 #     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
@@ -39,6 +38,14 @@ if [[ ! -v "_evmfs" ]]; then
   elif [[ "${_evmfs_available}" == "" ]]; then
     _evmfs="false"
   fi
+fi
+if [[ ! -v "_git_http" ]]; then
+  _git_http="gitlab"
+fi
+if [[ "${_git_http}" == "github" ]]; then
+  _archive_format="zip"
+elif [[ "${_git_http}" == "gitlab" ]]; then
+  _archive_format="tar.gz"
 fi
 _os="$( \
   uname \
@@ -67,7 +74,7 @@ pkgdesc="${_pkgdesc[*]}"
 arch=(
   'any'
 )
-_http="https://github.com"
+_http="https://${_git_http}.com"
 _ns="themartiancompany"
 url="${_http}/${_ns}/${pkgname}"
 license=(
@@ -85,16 +92,22 @@ depends=(
   "node-run"
   "${_node}-ethers"
 )
-[[ "${_os}" != "GNU/Linux" ]] && \
-[[ "${_os}" == "Android" ]] && \
+if [[ "${_os}" != "GNU/Linux" ]] && \
+   [[ "${_os}" == "Android" ]]; then
   depends+=(
   )
-optdepends=(
-  "evm-chains-info: automatic RPC selection for many blockchains"
+fi
+_evm_chains_info_optdepends=(
+  "evm-chains-info:"
+    "automatic RPC selection for many blockchains"
 )
-[[ "${_os}" == 'Android' ]] && \
+optdepends=(
+  "${_evm_chains_info_optdepends[*]}"
+)
+if [[ "${_os}" == 'Android' ]]; then
   optdepends+=(
   )
+fi
 makedepends=(
   'make'
 )
@@ -115,15 +128,16 @@ _tarname="${pkgname}-${_tag}"
 if [[ "${_offline}" == "true" ]]; then
   _url="file://${HOME}/${pkgname}"
 fi
+_sum='6a25e561ab17fb2d854e198433bac03532018560428e78c0f802604960561926'
+_github_sum='6a25e561ab17fb2d854e198433bac03532018560428e78c0f802604960561926'
+_evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
 _evmfs_network="100"
 _evmfs_address="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
-_evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
-_archive_sum='6a25e561ab17fb2d854e198433bac03532018560428e78c0f802604960561926'
 _evmfs_archive_uri="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}/${_archive_sum}"
-_evmfs_archive_src="${_tarname}.zip::${_evmfs_archive_uri}"
+_evmfs_archive_src="${_tarname}.${_archive_format}::${_evmfs_archive_uri}"
 _archive_sig_sum="4922cd7a0e9c78f3cc98df9f2191cc556851e85570aa6765294042de3d0b092a"
 _archive_sig_uri="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}/${_archive_sig_sum}"
-_archive_sig_src="${_tarname}.zip.sig::${_archive_sig_uri}"
+_archive_sig_src="${_tarname}.${_archive_format}.sig::${_archive_sig_uri}"
 if [[ "${_evmfs}" == "true" ]]; then
   makedepends+=(
     "evmfs"
@@ -144,12 +158,12 @@ elif [[ "${_git}" == true ]]; then
   _sum="SKIP"
 elif [[ "${_git}" == false ]]; then
   if [[ "${_tag_name}" == 'pkgver' ]]; then
-    _src="${_tarname}.tar.gz::${_url}/archive/refs/tags/${_tag}.tar.gz"
-    _sum="d4f4179c6e4ce1702c5fe6af132669e8ec4d0378428f69518f2926b969663a91"
+    _uri="${_url}/archive/refs/tags/${_tag}.${_archive_format}"
   elif [[ "${_tag_name}" == "commit" ]]; then
-    _src="${_tarname}.zip::${_url}/archive/${_commit}.zip"
-    _sum="${_archive_sum}"
+    _uri="${_url}/archive/${_commit}.${_archive_format}"
+    _sum="${_github_sum}"
   fi
+  _src="${_tarname}.${_archive_format}::${_uri}"
 fi
 source=(
   "${_src}"
