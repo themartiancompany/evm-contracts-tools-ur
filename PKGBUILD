@@ -157,11 +157,17 @@ elif [[ "${_evmfs}" == "false" ]]; then
     _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
     _sum="SKIP"
   elif [[ "${_git}" == false ]]; then
-    if [[ "${_tag_name}" == 'pkgver' ]]; then
-      _uri="${_url}/archive/refs/tags/${_tag}.${_archive_format}"
-    elif [[ "${_tag_name}" == "commit" ]]; then
-      _uri="${_url}/archive/${_commit}.${_archive_format}"
-      _sum="${_github_sum}"
+    if [[ "${_git_http}" == "github" ]]; then
+      if [[ "${_tag_name}" == "commit" ]]; then
+        _uri="${_url}/archive/${_commit}.${_archive_format}"
+        _sum="${_github_sum}"
+      fi
+    elif [[ "${_git_http}" == "github" ]]; then
+      if [[ "${_tag_name}" == 'pkgver' ]]; then
+        _uri="${_url}/archive/refs/tags/${_tag}.${_archive_format}"
+      elif [[ "${_tag_name}" == "commit" ]]; then
+        _uri="${_url}/-/archive/${_tag}/${_tag}.${_archive_format}"
+      fi
     fi
     _src="${_tarname}.${_archive_format}::${_uri}"
   fi
