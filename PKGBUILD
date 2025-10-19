@@ -149,20 +149,22 @@ if [[ "${_evmfs}" == "true" ]]; then
   sha256sums+=(
     "${_sig_sum}"
   )
-elif [[ "${_git}" == true ]]; then
-  makedepends+=(
-    "git"
-  )
-  _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
-  _sum="SKIP"
-elif [[ "${_git}" == false ]]; then
-  if [[ "${_tag_name}" == 'pkgver' ]]; then
-    _uri="${_url}/archive/refs/tags/${_tag}.${_archive_format}"
-  elif [[ "${_tag_name}" == "commit" ]]; then
-    _uri="${_url}/archive/${_commit}.${_archive_format}"
-    _sum="${_github_sum}"
+elif [[ "${_evmfs}" == "false" ]]; then
+  if [[ "${_git}" == true ]]; then
+    makedepends+=(
+      "git"
+    )
+    _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
+    _sum="SKIP"
+  elif [[ "${_git}" == false ]]; then
+    if [[ "${_tag_name}" == 'pkgver' ]]; then
+      _uri="${_url}/archive/refs/tags/${_tag}.${_archive_format}"
+    elif [[ "${_tag_name}" == "commit" ]]; then
+      _uri="${_url}/archive/${_commit}.${_archive_format}"
+      _sum="${_github_sum}"
+    fi
+    _src="${_tarname}.${_archive_format}::${_uri}"
   fi
-  _src="${_tarname}.${_archive_format}::${_uri}"
 fi
 source=(
   "${_src}"
