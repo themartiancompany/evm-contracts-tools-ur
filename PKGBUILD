@@ -157,6 +157,7 @@ elif [[ "${_evmfs}" == "false" ]]; then
     _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
     _sum="SKIP"
   elif [[ "${_git}" == false ]]; then
+    _uri=""
     if [[ "${_git_http}" == "github" ]]; then
       if [[ "${_tag_name}" == "commit" ]]; then
         _uri="${_url}/archive/${_commit}.${_archive_format}"
