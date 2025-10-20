@@ -39,6 +39,15 @@ if [[ ! -v "_evmfs" ]]; then
     _evmfs="false"
   fi
 fi
+_os="$( \
+  uname \
+    -o)"
+if [[ ! -v "_git" ]]; then
+  _git="false"
+fi
+if [[ ! -v "_offline" ]]; then
+  _offline="false"
+fi
 if [[ ! -v "_git_http" ]]; then
   _git_http="gitlab"
 fi
@@ -47,13 +56,8 @@ if [[ "${_git_http}" == "github" ]]; then
 elif [[ "${_git_http}" == "gitlab" ]]; then
   _archive_format="tar.gz"
 fi
-_os="$( \
-  uname \
-    -o)"
 _node="nodejs"
-_offline="false"
 _docs="true"
-_git="false"
 _py="python"
 pkgbase=evm-contracts-tools
 pkgname=(
@@ -134,9 +138,10 @@ _github_sum='6a25e561ab17fb2d854e198433bac03532018560428e78c0f802604960561926'
 _evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
 _evmfs_network="100"
 _evmfs_address="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
-_evmfs_uri="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}/${_sum}"
+_evmfs_dir="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}"
+_evmfs_uri="${_evmfs_dir}/${_sum}"
 _evmfs_src="${_tarname}.${_archive_format}::${_evmfs_uri}"
-_sig_uri="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}/${_sig_sum}"
+_sig_uri="${_evmfs_dir}/${_sig_sum}"
 _sig_src="${_tarname}.${_archive_format}.sig::${_sig_uri}"
 if [[ "${_evmfs}" == "true" ]]; then
   makedepends+=(
@@ -199,11 +204,16 @@ check() {
 }
 
 package_evm-contracts-tools() {
+  local \
+    _make_opts=()
+  _make_opts+=(
+    PREFIX="/usr"
+    DESTDIR="${pkgdir}"
+  )
   cd \
     "${_tarname}"
   make \
-    PREFIX="/usr" \
-    DESTDIR="${pkgdir}" \
+    "${_make_opts[@]}" \
     install-scripts
   install \
     -Dm644 \
@@ -213,21 +223,25 @@ package_evm-contracts-tools() {
 }
 
 package_evm-contracts-tools-docs() {
+  local \
+    _make_opts=()
+  _make_opts+=(
+    PREFIX="/usr"
+    DESTDIR="${pkgdir}"
+  )
   cd \
     "${_tarname}"
   make \
-    PREFIX="/usr" \
-    DESTDIR="${pkgdir}" \
+    "${_make_opts[@]}" \
     install-doc
   make \
-    PREFIX="/usr" \
-    DESTDIR="${pkgdir}" \
+    "${_make_opts[@]}" \
     install-man
   install \
     -Dm644 \
     "COPYING" \
     -t \
-    "${pkgdir}/usr/share/licenses/${pkgbase}-docs/"
+    "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
 
 # vim: ft=sh syn=sh et
