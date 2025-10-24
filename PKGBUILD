@@ -233,9 +233,7 @@ package_evm-contracts-tools-docs() {
     "${_tarname}"
   make \
     "${_make_opts[@]}" \
-    install-doc
-  make \
-    "${_make_opts[@]}" \
+    install-doc \
     install-man
   install \
     -Dm644 \
