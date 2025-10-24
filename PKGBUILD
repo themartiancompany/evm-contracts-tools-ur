@@ -225,6 +225,7 @@ package_evm-contracts-tools() {
 package_evm-contracts-tools-docs() {
   local \
     _make_opts=()
+  depends=()
   _make_opts+=(
     PREFIX="/usr"
     DESTDIR="${pkgdir}"
