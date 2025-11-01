@@ -129,6 +129,7 @@ _url="${url}"
 _tag="${_commit}"
 _tag_name="commit"
 _tarname="${pkgname}-${_tag}"
+_tarfile="${_tarname}.${_archive_format}"
 if [[ "${_offline}" == "true" ]]; then
   _url="file://${HOME}/${pkgname}"
 fi
@@ -140,9 +141,9 @@ _evmfs_network="100"
 _evmfs_address="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
 _evmfs_dir="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}"
 _evmfs_uri="${_evmfs_dir}/${_sum}"
-_evmfs_src="${_tarname}.${_archive_format}::${_evmfs_uri}"
+_evmfs_src="${_tarfile}::${_evmfs_uri}"
 _sig_uri="${_evmfs_dir}/${_sig_sum}"
-_sig_src="${_tarname}.${_archive_format}.sig::${_sig_uri}"
+_sig_src="${_tarfile}.sig::${_sig_uri}"
 if [[ "${_evmfs}" == "true" ]]; then
   makedepends+=(
     "evmfs"
@@ -175,7 +176,7 @@ elif [[ "${_evmfs}" == "false" ]]; then
         _uri="${_url}/-/archive/${_tag}/${_tag}.${_archive_format}"
       fi
     fi
-    _src="${_tarname}.${_archive_format}::${_uri}"
+    _src="${_tarfile}::${_uri}"
   fi
 fi
 source=(
