@@ -179,10 +179,10 @@ elif [[ "${_evmfs}" == "false" ]]; then
     _src="${_tarfile}::${_uri}"
   fi
 fi
-source=(
+source+=(
   "${_src}"
 )
-sha256sums=(
+sha256sums+=(
   "${_sum}"
 )
 validpgpkeys=(
