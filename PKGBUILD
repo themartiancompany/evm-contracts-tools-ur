@@ -115,7 +115,7 @@ _evm_contract_tools_docs_optdepends=(
     "documentation"
     "and manuals."
 )
-_evm_contracts_tools_ref_optdepends+=(
+_evm_contracts_tools_docs_ref_optdepends+=(
  "${_pkg}:"
    "The package this documentation"
    "package pertains to."
