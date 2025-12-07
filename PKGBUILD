@@ -56,10 +56,14 @@ if [[ "${_git_http}" == "github" ]]; then
 elif [[ "${_git_http}" == "gitlab" ]]; then
   _archive_format="tar.gz"
 fi
+if [[ ! -v "_docs" ]]; then
+  _docs="true"
+fi
 _node="nodejs"
-_docs="true"
 _py="python"
-pkgbase=evm-contracts-tools
+_proj=hip
+_pkg=evm-contracts-tools
+pkgbase="${_pkg}"
 pkgname=(
   "${pkgbase}"
 )
@@ -105,7 +109,19 @@ _evm_chains_info_optdepends=(
   "evm-chains-info:"
     "automatic RPC selection for many blockchains"
 )
+_evm_contract_tools_docs_optdepends=(
+  "${_pkg}-docs:"
+    "EVM Contracts Tools"
+    "documentation"
+    "and manuals."
+)
+_evm_contracts_tools_ref_optdepends+=(
+ "${_pkg}:"
+   "The package this documentation"
+   "package pertains to."
+)
 optdepends=(
+  "${_evm_contracts_tools_docs_optdepends[*]}"
   "${_evm_chains_info_optdepends[*]}"
 )
 if [[ "${_os}" == 'Android' ]]; then
@@ -227,7 +243,11 @@ package_evm-contracts-tools() {
 package_evm-contracts-tools-docs() {
   local \
     _make_opts=()
+  pkgdesc="${pkgdesc} (documentation)"
   depends=()
+  optdepends=(
+    "${_evm_contracts_tools_docs_ref_optdepends[*]}"
+  )
   _make_opts+=(
     PREFIX="/usr"
     DESTDIR="${pkgdir}"
