@@ -88,6 +88,10 @@ url="${_http}/${_ns}/${pkgname}"
 license=(
   'AGPL3'
 )
+group=(
+ "${_proj}"
+ "evm-tools"
+)
 depends=(
   "evm-contracts-source-index"
   "evm-chains-explorers"
