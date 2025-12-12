@@ -135,6 +135,16 @@ fi
 makedepends=(
   'make'
 )
+if [[ "${_git}" == "true" ]]; then
+  makedepends+=(
+    "git"
+  )
+fi
+if [[ "${_evmfs}" == "true" ]]; then
+  makedepends+=(
+    "evmfs"
+  )
+fi
 if [[ "${_docs}" == "true" ]]; then
   makedepends+=(
     "${_py}-docutils"
@@ -178,9 +188,6 @@ if [[ "${_evmfs}" == "true" ]]; then
   )
 elif [[ "${_evmfs}" == "false" ]]; then
   if [[ "${_git}" == true ]]; then
-    makedepends+=(
-      "git"
-    )
     _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
     _sum="SKIP"
   elif [[ "${_git}" == false ]]; then
@@ -190,10 +197,8 @@ elif [[ "${_evmfs}" == "false" ]]; then
         _uri="${_url}/archive/${_commit}.${_archive_format}"
         _sum="${_github_sum}"
       fi
-    elif [[ "${_git_http}" == "github" ]]; then
-      if [[ "${_tag_name}" == 'pkgver' ]]; then
-        _uri="${_url}/archive/refs/tags/${_tag}.${_archive_format}"
-      elif [[ "${_tag_name}" == "commit" ]]; then
+    elif [[ "${_git_http}" == "gitlab" ]]; then
+      if [[ "${_tag_name}" == "commit" ]]; then
         _uri="${_url}/-/archive/${_tag}/${_tag}.${_archive_format}"
       fi
     fi
@@ -252,6 +257,7 @@ package_evm-contracts-tools-docs() {
   optdepends=(
     "${_evm_contracts_tools_docs_ref_optdepends[*]}"
   )
+  provides=()
   _make_opts+=(
     PREFIX="/usr"
     DESTDIR="${pkgdir}"
