@@ -27,7 +27,7 @@
 #     <pellegrinoprevete@gmail.com>
 #     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
-_evmfs_available="$( \
+_evmfs_available="$(
   command \
     -v \
     "evmfs" || \
@@ -39,7 +39,7 @@ if [[ ! -v "_evmfs" ]]; then
     _evmfs="false"
   fi
 fi
-_os="$( \
+_os="$(
   uname \
     -o)"
 if [[ ! -v "_git" ]]; then
@@ -51,10 +51,20 @@ fi
 if [[ ! -v "_git_http" ]]; then
   _git_http="gitlab"
 fi
-if [[ "${_git_http}" == "github" ]]; then
-  _archive_format="zip"
-elif [[ "${_git_http}" == "gitlab" ]]; then
-  _archive_format="tar.gz"
+if [[ ! -v "_archive_format" ]]; then
+  if [[ "${_git}" == "true" ]]; then
+    if [[ "${_evmfs}" == "true" ]]; then
+      _archive_format="bundle"
+    elif [[ "${_evmfs}" == "false" ]]; then
+      _archive_format="git"
+    fi
+  elif [[ "${_git}" == "false" ]]; then
+    if [[ "${_git_http}" == "github" ]]; then
+      _archive_format="zip"
+    elif [[ "${_git_http}" == "gitlab" ]]; then
+      _archive_format="tar.gz"
+    fi
+  fi
 fi
 if [[ ! -v "_docs" ]]; then
   _docs="true"
@@ -128,10 +138,6 @@ optdepends=(
   "${_evm_contracts_tools_docs_optdepends[*]}"
   "${_evm_chains_info_optdepends[*]}"
 )
-if [[ "${_os}" == 'Android' ]]; then
-  optdepends+=(
-  )
-fi
 makedepends=(
   'make'
 )
