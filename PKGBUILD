@@ -123,7 +123,7 @@ _evm_chains_info_optdepends=(
   "evm-chains-info:"
     "automatic RPC selection for many blockchains"
 )
-_evm_contract_tools_docs_optdepends=(
+_evm_contracts_tools_docs_optdepends=(
   "${_pkg}-docs:"
     "EVM Contracts Tools"
     "documentation"
