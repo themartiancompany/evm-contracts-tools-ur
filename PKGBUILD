@@ -48,8 +48,8 @@ fi
 if [[ ! -v "_offline" ]]; then
   _offline="false"
 fi
-if [[ ! -v "_git_http" ]]; then
-  _git_http="gitlab"
+if [[ ! -v "_git_service" ]]; then
+  _git_service="gitlab"
 fi
 if [[ ! -v "_archive_format" ]]; then
   if [[ "${_git}" == "true" ]]; then
@@ -59,9 +59,9 @@ if [[ ! -v "_archive_format" ]]; then
       _archive_format="git"
     fi
   elif [[ "${_git}" == "false" ]]; then
-    if [[ "${_git_http}" == "github" ]]; then
+    if [[ "${_git_service}" == "github" ]]; then
       _archive_format="zip"
-    elif [[ "${_git_http}" == "gitlab" ]]; then
+    elif [[ "${_git_service}" == "gitlab" ]]; then
       _archive_format="tar.gz"
     fi
   fi
@@ -92,7 +92,7 @@ pkgdesc="${_pkgdesc[*]}"
 arch=(
   'any'
 )
-_http="https://${_git_http}.com"
+_http="https://${_git_service}.com"
 _ns="themartiancompany"
 url="${_http}/${_ns}/${pkgname}"
 license=(
@@ -197,12 +197,12 @@ elif [[ "${_evmfs}" == "false" ]]; then
     _sum="SKIP"
   elif [[ "${_git}" == false ]]; then
     _uri=""
-    if [[ "${_git_http}" == "github" ]]; then
+    if [[ "${_git_service}" == "github" ]]; then
       if [[ "${_tag_name}" == "commit" ]]; then
         _uri="${_url}/archive/${_commit}.${_archive_format}"
         _sum="${_github_sum}"
       fi
-    elif [[ "${_git_http}" == "gitlab" ]]; then
+    elif [[ "${_git_service}" == "gitlab" ]]; then
       if [[ "${_tag_name}" == "commit" ]]; then
         _uri="${_url}/-/archive/${_tag}/${_tag}.${_archive_format}"
       fi
