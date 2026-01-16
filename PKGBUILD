@@ -84,7 +84,7 @@ if [[ "${_docs}" == "true" ]]; then
 fi
 pkgver="0.0.0.0.0.0.0.0.1.1.1.1.1"
 _commit="37e21a70aa35cef32df97646cc02cdc8fe79aefd"
-pkgrel=3
+pkgrel=4
 _pkgdesc=(
   "EVM networks smart contracts tools."
 )
