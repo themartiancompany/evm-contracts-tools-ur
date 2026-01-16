@@ -165,7 +165,7 @@ _url="${url}"
 if [[ "${_git}" == "false" ]]; then
   _tag="${pkgver}"
   _tag_name="pkgver"
-  _tarname="${pkgname}_${_tag}"
+  _tarname="${pkgname}-${_tag}"
 elif [[ "${_git}" == "true" ]]; then
   _tag="${_commit}"
   _tag_name="commit"
