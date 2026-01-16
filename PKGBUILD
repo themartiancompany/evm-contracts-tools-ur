@@ -27,6 +27,9 @@
 #     <pellegrinoprevete@gmail.com>
 #     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
+_os="$(
+  uname \
+    -o)"
 _evmfs_available="$(
   command \
     -v \
@@ -39,9 +42,6 @@ if [[ ! -v "_evmfs" ]]; then
     _evmfs="false"
   fi
 fi
-_os="$(
-  uname \
-    -o)"
 if [[ ! -v "_git" ]]; then
   _git="false"
 fi
@@ -84,7 +84,7 @@ if [[ "${_docs}" == "true" ]]; then
 fi
 pkgver="0.0.0.0.0.0.0.0.1.1.1.1.1"
 _commit="37e21a70aa35cef32df97646cc02cdc8fe79aefd"
-pkgrel=2
+pkgrel=3
 _pkgdesc=(
   "EVM networks smart contracts tools."
 )
@@ -162,9 +162,15 @@ checkdepends=(
 source=()
 sha256sums=()
 _url="${url}"
-_tag="${_commit}"
-_tag_name="commit"
-_tarname="${pkgname}-${_tag}"
+if [[ "${_git}" == "false" ]]; then
+  _tag="${pkgver}"
+  _tag_name="pkgver"
+  _tarname="${pkgname}_${_tag}"
+elif [[ "${_git}" == "true" ]]; then
+  _tag="${_commit}"
+  _tag_name="commit"
+  _tarname="${pkgname}-${_tag}"
+fi
 _tarfile="${_tarname}.${_archive_format}"
 if [[ "${_offline}" == "true" ]]; then
   _url="file://${HOME}/${pkgname}"
