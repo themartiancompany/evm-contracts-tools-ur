@@ -162,15 +162,9 @@ checkdepends=(
 source=()
 sha256sums=()
 _url="${url}"
-if [[ "${_git}" == "false" ]]; then
-  _tag="${pkgver}"
-  _tag_name="pkgver"
-  _tarname="${pkgname}-${_tag}"
-elif [[ "${_git}" == "true" ]]; then
-  _tag="${_commit}"
-  _tag_name="commit"
-  _tarname="${pkgname}-${_tag}"
-fi
+_tag="${_commit}"
+_tag_name="commit"
+_tarname="${pkgname}-${_tag}"
 _tarfile="${_tarname}.${_archive_format}"
 if [[ "${_offline}" == "true" ]]; then
   _url="file://${HOME}/${pkgname}"
