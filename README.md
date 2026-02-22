@@ -1,9 +1,9 @@
 [comment]: <> (SPDX-License-Identifier: AGPL-3.0)
 
-[comment]: <> (-------------------------------------------------------------)
+[comment]: <> (----------------------------------------------------)
 [comment]: <> (Copyright © 2024, 2025, 2026  Pellegrino Prevete)
 [comment]: <> (All rights reserved)
-[comment]: <> (-------------------------------------------------------------)
+[comment]: <> (----------------------------------------------------)
 
 [comment]: <> (This program is free software: you can redistribute)
 [comment]: <> (it and/or modify it under the terms of the GNU Affero)
